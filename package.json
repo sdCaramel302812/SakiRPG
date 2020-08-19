@@ -1,0 +1,28 @@
+{
+  "name": "saki-rpg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "phaser": "^3.24.1",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdCaramel302812/SakiRPG.git"
+  },
+  "keywords": [
+    "saki"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdCaramel302812/SakiRPG/issues"
+  },
+  "homepage": "https://github.com/sdCaramel302812/SakiRPG#readme"
+}
