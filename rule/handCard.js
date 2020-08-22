@@ -1,13 +1,13 @@
 
 
-class handCard{
+class HandCard{
     constructor() {
 
     }
 
     card = [];
     chiCard = [];
-    // t1, t2, t3, dir (0 : self, 1 : left, 2 : front, 3 : right)
+    // t1, t2, t3, dir (self, left, front, right)
     ponCard = [];
     kanCard = [];
     newTile = '';
@@ -73,7 +73,7 @@ class handCard{
     /**
      * 
      * @param {string} tile 
-     * @param {number} dir 1 : left, 2 : front, 3 : right
+     * @param {string} dir 1 : left, 2 : front, 3 : right
      * @returns {boolean}
      */
     pon(tile, dir) {
@@ -81,13 +81,13 @@ class handCard{
             if (tile[0] === this.card[i][0] && tile[1] === this.card[i][1]) {
                 if (tile[0] === this.card[i + 1][0] && tile[1] === this.card[i + 1][1]) {
                     switch (dir) {
-                        case 1:
+                        case 'left':
                             this.ponCard.push([tile, this.card[i], this.card[i + 1], dir]);
                             break;
-                        case 2:
+                        case 'front':
                             this.ponCard.push([this.card[i], tile, this.card[i + 1], dir]);
                             break;
-                        case 3:
+                        case 'right':
                             this.ponCard.push([this.card[i], this.card[i + 1], tile, dir]);
                             break;
                     }
@@ -111,13 +111,13 @@ class handCard{
             if (tile[0] === this.card[i][0] && tile[1] === this.card[i][1]) {
                 if (tile[0] === this.card[i + 1][0] && tile[1] === this.card[i + 1][1] && tile[0] === this.card[i + 2][0] && tile[1] === this.card[i + 2][1]) {
                     switch (dir) {
-                        case 1:
+                        case 'left':
                             this.kanCard.push([tile, this.card[i], this.card[i + 1], this.card[i + 2], dir]);
                             break;
-                        case 2:
+                        case 'front':
                             this.kanCard.push([this.card[i], tile, this.card[i + 1], this.card[i + 1] ,dir]);
                             break;
-                        case 3:
+                        case 'right':
                             this.kanCard.push([this.card[i], this.card[i + 1], this.card[i + 1], tile, dir]);
                             break;
                     }
@@ -134,7 +134,7 @@ class handCard{
         for (let i = 0; i < this.card.length - 3; ++i) {
             if (tile[0] === this.card[i][0] && tile[1] === this.card[i][1]) {
                 if (tile[0] === this.card[i + 1][0] && tile[1] === this.card[i + 1][1] && tile[0] === this.card[i + 2][0] && tile[1] === this.card[i + 2][1] && tile[0] === this.card[i + 3][0] && tile[1] === this.card[i + 3][1]) {
-                    this.kanCard.push([tile, this.card[i], this.card[i + 1], this.card[i + 2], 0]);
+                    this.kanCard.push([tile, this.card[i], this.card[i + 1], this.card[i + 2], 'self']);
                     this.card.splice(i, 4);
                     return true;
                 }
@@ -157,7 +157,7 @@ class handCard{
 }
 
 function test() {
-    a = new handCard();
+    a = new HandCard();
     a.draw('s1');
     a.draw('s2');
     a.draw('s3');
@@ -172,8 +172,8 @@ function test() {
     a.draw('w1');
     a.draw('w1');
     a.chi('s5', 's3', 's4');
-    a.pon('p5r', 2);
-    a.minKan('w5r', 3);
+    a.pon('p5r', 'front');
+    a.minKan('w5r', 'right');
     a.anKan('w1');
     a.discard('s1');
     console.log(a.card);
@@ -185,4 +185,10 @@ function test() {
     console.log(a.kanCard);
 }
 
-test();
+
+if (require.main === module) {
+    test();
+  }
+
+
+module.exports = HandCard;

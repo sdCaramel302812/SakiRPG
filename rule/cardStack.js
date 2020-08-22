@@ -1,6 +1,6 @@
 const def = require('./def.js');
 
-class cardStack{
+class CardStack{
     constructor(redNum = 0) {
         this.wall = []
         for (let i = 0; i < 136; ++i){
@@ -14,6 +14,9 @@ class cardStack{
         if (redNum === 4) {
             this.wall[4 * 4 + 1] = 'p5r';
         }
+        
+        //  sute hai
+        this.river = [[], [], [], []];
     }
 
     rinShan = 135;
@@ -32,6 +35,10 @@ class cardStack{
         if (redNum === 4) {
             this.wall[4 * 4 + 1] = 'p5r';
         }
+
+        for (let i = 0; i < 4; ++i){
+            this.river[0].length = 0;
+        }
     }
 
     shuffle() {
@@ -47,13 +54,19 @@ class cardStack{
 
     /**
      * 
-     * @param {function} rule1 
-     * @param {function} rule2 
-     * @param {function} rule3 
-     * @param {function} rule4 
+     * @param {[function]} rule
      */
-    specialShuffle(rule1, rule2, rule3, rule4){
+    specialShuffle(rule){
         
+    }
+
+    /**
+     * 
+     * @param {number} player 
+     * @param {string} tile 
+     */
+    discardToRiver(player, tile) {
+        this.river[player].push(tile);
     }
 
     /**
@@ -164,7 +177,7 @@ class cardStack{
 
 
 function test() {
-    var c = new cardStack(3);
+    var c = new CardStack(3);
     c.shuffle();
 
     console.log(c.deal());
@@ -179,7 +192,16 @@ function test() {
     console.log(c.drawFromBack());
 
     console.log(c.getDora());
+
+    c.discardToRiver(0, 'p5r');
+    console.log(c.river);
 }
 
-test();
+
+if (require.main === module) {
+    test();
+}
+
+
+module.exports = CardStack;
 
