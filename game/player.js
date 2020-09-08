@@ -2,12 +2,13 @@ const HandCard = require('./handCard');
 
 
 class Player {
-    constructor() {
+    constructor(rule) {
         this.card = new HandCard();
+        this.rule = rule;
     }
 
     canWin(tile) {
-        
+
     }
 
     canKan(tile) {

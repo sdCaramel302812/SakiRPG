@@ -1,4 +1,4 @@
-
+const utils = require('./utils.js');
 
 class HandCard{
     constructor() {
@@ -51,10 +51,10 @@ class HandCard{
         var index1 = -1;
         var index2 = -1;
         for (let i = 0; i < this.card.length; ++i) {
-            if (t2[0] === this.card[i][0] && t2[1] === this.card[i][1]) {
+            if (utils.isSameTile(t2, this.card[i])) {
                 index1 = i;
             }
-            if (t3[0] === this.card[i][0] && t3[1] === this.card[i][1]) {
+            if (utils.isSameTile(t3, this.card[i])) {
                 index2 = i;
             }
         }
@@ -78,8 +78,8 @@ class HandCard{
      */
     pon(tile, dir) {
         for (let i = 0; i < this.card.length - 1; ++i) {
-            if (tile[0] === this.card[i][0] && tile[1] === this.card[i][1]) {
-                if (tile[0] === this.card[i + 1][0] && tile[1] === this.card[i + 1][1]) {
+            if (utils.isSameTile(tile, this.card[i])) {
+                if (utils.isSameTile(tile, this.card[i + 1])) {
                     switch (dir) {
                         case 'left':
                             this.ponCard.push([tile, this.card[i], this.card[i + 1], dir]);
@@ -108,8 +108,8 @@ class HandCard{
      */
     minKan(tile, dir) {
         for (let i = 0; i < this.card.length - 2; ++i) {
-            if (tile[0] === this.card[i][0] && tile[1] === this.card[i][1]) {
-                if (tile[0] === this.card[i + 1][0] && tile[1] === this.card[i + 1][1] && tile[0] === this.card[i + 2][0] && tile[1] === this.card[i + 2][1]) {
+            if (utils.isSameTile(tile, this.card[i])) {
+                if (utils.isSameTile(tile, this.card[i + 1]) && utils.isSameTile(tile, this.card[i + 2])) {
                     switch (dir) {
                         case 'left':
                             this.kanCard.push([tile, this.card[i], this.card[i + 1], this.card[i + 2], dir]);
@@ -132,8 +132,8 @@ class HandCard{
 
     anKan(tile) {
         for (let i = 0; i < this.card.length - 3; ++i) {
-            if (tile[0] === this.card[i][0] && tile[1] === this.card[i][1]) {
-                if (tile[0] === this.card[i + 1][0] && tile[1] === this.card[i + 1][1] && tile[0] === this.card[i + 2][0] && tile[1] === this.card[i + 2][1] && tile[0] === this.card[i + 3][0] && tile[1] === this.card[i + 3][1]) {
+            if (utils.isSameTile(tile, this.card[i])) {
+                if (utils.isSameTile(tile, this.card[i + 1]) && utils.isSameTile(tile, this.card[i + 2]) && utils.isSameTile(tile, this.card[i + 3])) {
                     this.kanCard.push([tile, this.card[i], this.card[i + 1], this.card[i + 2], 'self']);
                     this.card.splice(i, 4);
                     return true;
@@ -146,7 +146,7 @@ class HandCard{
 
     kaKan(tile) {
         for (let i = 0; i < this.ponCard.length; ++i) {
-            if (tile[0] === this.ponCard[i][0][0] && tile[1] === this.ponCard[i][0][1]) {
+            if (utils.isSameTile(tile, this.ponCard[i][0])) {
                 this.kanCard.push([tile, this.ponCard[i][0], this.ponCard[i][1], this.ponCard[i][2], this.ponCard[i][3]]);
                 this.ponCard.splice(i, 1);
                 return true;
@@ -188,7 +188,7 @@ function test() {
 
 if (require.main === module) {
     test();
-  }
+}
 
 
 module.exports = HandCard;

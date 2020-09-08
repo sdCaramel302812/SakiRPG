@@ -1,4 +1,4 @@
-const def = require('./def.js');
+const def = require('./utils.js');
 
 class CardStack{
     constructor(redNum = 0) {
