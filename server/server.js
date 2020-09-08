@@ -1,25 +1,23 @@
 const express = require('express');
-const SocketServer = require('ws').Server;
+const http = require('http');
+const app = express();
 
-const port = 2188;
+var port = 80;
 
-const server = express().listen(
-    port, () => {
-        console.log(`listening on ${port}`);
-    }
-);
+app.get('/', (request, response) => {
+	response.send('hello world');
+});
+app.get('/123', (request, response) => {
+	response.send('hello world 123');
+});
+app.get('/456', (request, response) => {
+	response.send('hello world 456');
+});
+//	res.json()		send json response
+//	res.sendFile()	send file
 
-const wss = new SocketServer({server});
 
-wss.on('connection', ws => {
-    console.log('client connected');
-    console.log(ws);
 
-    ws.on('message', data => {
-        ws.send(data);
-    });
-
-    ws.on('close', () => {
-        console.log('close connected');
-    });
+http.createServer(app).listen(port, () => {
+	console.log(`listening on port ${port}`);
 });
