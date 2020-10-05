@@ -1,14 +1,25 @@
 
-let ws = new WebSocket('ws://localhost:2188')
+//let ws = new WebSocket('ws://localhost:2188')
+//import {test} from './clienttest.js';
 
-ws.onopen = () => {
-    console.log('open connection')
-}
+const teststr = 'teststr';
 
-ws.onclose = () => {
-    console.log('close connection')
-}
+//console.log(test);
 
-ws.onmessage = event => {
-    console.log(event);
-}
+//ws.onopen = () => {
+//    console.log('open connection')
+//}
+
+//ws.onclose = () => {
+//    console.log('close connection')
+//}
+
+//ws.onmessage = event => {
+//    console.log(event);
+//}
+
+// TODO
+
+// BUG
+
+// FIXME

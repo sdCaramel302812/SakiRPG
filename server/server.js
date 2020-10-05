@@ -5,7 +5,7 @@ const app = express();
 var port = 80;
 
 app.get('/', (request, response) => {
-	response.send('hello world');
+    response.sendFile('/d/saki-RPG/client/index.html');
 });
 app.get('/123', (request, response) => {
 	response.send('hello world 123');
@@ -13,6 +13,7 @@ app.get('/123', (request, response) => {
 app.get('/456', (request, response) => {
 	response.send('hello world 456');
 });
+app.use(express.static('../client'));
 //	res.json()		send json response
 //	res.sendFile()	send file
 

@@ -100,8 +100,52 @@ function winCheck(card) {
         var remain = Object.assign([], card.card);
         if (utils.isSameTile(remain[i], remain[i + 1])) {
             remain.splice(i, 2);
+
+            // check mentsu
+            while (true) {
+                if (remain.length == 0) {
+                    return true;
+                }
+
+                if (remain.length >= 3 && remain[0] === remain[1] && remain[0] === remain[2]) {
+                    // s1 s1 s1
+                    remain.splice(0, 3);
+                    continue;
+                } else if (remain.length >= 3 && 
+                utils.checkOrder[remain[2]] - utils.checkOrder[remain[1]] === 1 && 
+                utils.checkOrder[remain[2]] - utils.checkOrder[remain[0]] === 2) {
+                    // s1 s2 s3
+                    remain.splice(0, 3);
+                    continue;
+                } else if (remain.length >= 4 &&
+                utils.checkOrder[remain[3]] == utils.checkOrder[remain[2]] &&
+                utils.checkOrder[remain[3]] == utils.checkOrder[remain[1]]
+                ) {
+                    // s1 s2 s2 s2 s2 s3
+                    remain.splice(1, 3);
+                    continue;
+                } else if (remain.length >= 4 &&
+                utils.checkOrder[remain[3]] - utils.checkOrder[remain[2]] === 1 &&
+                utils.checkOrder[remain[3]] - utils.checkOrder[remain[0]] === 2) {
+                    // s1 s2 s2 s3 s3 s4
+                    remain.splice(0, 2);
+                    remain.splice(1, 1);
+                    continue;
+                } else if (remain.length >= 5 &&
+                utils.checkOrder[remain[4]] - utils.checkOrder[remain[3]] === 1 &&
+                utils.checkOrder[remain[4]] - utils.checkOrder[remain[0]] === 2) {
+                    // s1 s1 s2 s2 s3 s3
+                    remain.splice(0, 1);
+                    remain.splice(2, 2);
+                    continue;
+                } else {
+                    break;
+                }
+            }
         }
     }
+
+    return false;
 }
 
 function tenpaiCheck(card) {
@@ -137,3 +181,11 @@ function test() {
 if (require.main === module) {
     test();
 }
+
+module.exports = {chitoiCheck,
+                kokushiCheck,
+                winCheck,
+                tenpaiCheck,
+                richiCheck,
+                pointCheck
+            };

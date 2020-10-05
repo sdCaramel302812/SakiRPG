@@ -12,6 +12,12 @@ var dict = {'p1' : 0, 'p2' : 1, 'p3' : 2, 'p4' : 3, 'p5' : 4, 'p6' : 5, 'p7' : 6
             '1E' : 27, '2S' : 28, '3W' : 29, '4N' : 30, '5H' : 31, '6F' : 32, '7C' : 33,
             'p5r' : 34, 'w5r' : 35, 's5r' : 36}
 
+var checkOrder = {'p1' : 1, 'p2' : 2, 'p3' : 3, 'p4' : 4, 'p5' : 5, 'p6' : 6, 'p7' : 7, 'p8' : 8, 'p9' : 9,
+            'w1' : 11, 'w2' : 12, 'w3' : 13, 'w4' : 14, 'w5' : 15, 'w6' : 16, 'w7' : 17, 'w8' : 18, 'w9' : 19,
+            's1' : 11, 's2' : 12, 's3' : 23, 's4' : 24, 's5' : 25, 's6' : 26, 's7' : 27, 's8' : 28, 's9' : 29,
+            '1E' : 31, '2S' : 32, '3W' : 33, '4N' : 34, '5H' : 35, '6F' : 36, '7C' : 37,
+            'p5r' : 5, 'w5r' : 15, 's5r' : 25}
+
 
 /**
  * // regardless of red tile
@@ -82,6 +88,7 @@ function strSplice(str, start, number, item) {
 
 module.exports = {arr,
                 dict,
+                checkOrder,
                 isSameTile,
                 strSplice,
                 isWindTile,
