@@ -4,7 +4,7 @@ const sinon = require('sinon');
 function sinonTest() {
 
 }
-
+/*
 describe('usage test', () => {
     afterEach(() => {
         sinon.restore();
@@ -67,3 +67,5 @@ describe('usage test', () => {
 
     });
 });
+
+*/

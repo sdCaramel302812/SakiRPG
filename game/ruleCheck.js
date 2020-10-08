@@ -1,10 +1,11 @@
 const HandCard = require('./handCard.js');
 const utils = require('./utils.js');
+const Point = require('./point.js');
 
 
 /**
  * 
- * @param {object} card handcard object
+ * @param {object} card handcard object, 14 tiles
  * @returns {boolean} is chitoi or not
  */
 function chitoiCheck(card) {
@@ -20,6 +21,11 @@ function chitoiCheck(card) {
     return true;
 }
 
+/**
+ * 
+ * @param {object} card handcard object, 14 tiles
+ * @returns {boolean} is koukushi or not 
+ */
 function kokushiCheck(card) {
     if (card.card.length != 14) {
         return false;
@@ -78,6 +84,11 @@ function kokushiCheck(card) {
     return true;
 }
 
+/**
+ * 
+ * @param {object} card handcrad object, 14 tiles
+ * @returns {boolean} is win or not
+ */
 function winCheck(card) {
     if (card.card.length % 3 != 2) {
         return false;
@@ -106,8 +117,7 @@ function winCheck(card) {
                 if (remain.length == 0) {
                     return true;
                 }
-
-                if (remain.length >= 3 && remain[0] === remain[1] && remain[0] === remain[2]) {
+                if (remain.length >= 3 && utils.isSameTile(remain[0], remain[1]) && utils.isSameTile(remain[0], remain[2])) {
                     // s1 s1 s1
                     remain.splice(0, 3);
                     continue;
@@ -148,16 +158,171 @@ function winCheck(card) {
     return false;
 }
 
+/**
+ * 
+ * @param {object} card handcard object, 13 tiles
+ * @returns {array} wait which tiles
+ */
 function tenpaiCheck(card) {
+    let result = [];
+    let pin = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let man = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let sou = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let other = [0, 0, 0, 0, 0, 0, 0];
+    for (let i = 0; i < card.card.length; ++i) {
+        if (utils.checkOrder[card.card[i]] > 30) {
+            ++other[utils.checkOrder[card.card[i]] - 31];
+        } else if (utils.checkOrder[card.card[i]] > 20) {
+            ++sou[utils.checkOrder[card.card[i]] - 21];
+        } else if (utils.checkOrder[card.card[i]] > 10) {
+            ++man[utils.checkOrder[card.card[i]] - 11];
+        } else {
+            ++pin[utils.checkOrder[card.card[i]] - 1];
+        }
+    }
 
+    let checkCard = Object.assign({}, card);
+    checkCard.draw = card.draw;
+    checkCard.discard = card.discard;
+    // check 1
+    if ((pin[0] > 0 || pin[1] > 0) && pin[0] < 4) {
+        checkCard.draw(utils.arr[0]);
+        if (winCheck(checkCard)) {
+            result.push(utils.arr[0]);
+        }
+        checkCard.discard(utils.arr[0]);
+    }
+    if ((man[0] > 0 || man[1] > 0) && man[0] < 4) {
+        checkCard.draw(utils.arr[9]);
+        if (winCheck(checkCard)) {
+            result.push(utils.arr[9]);
+        }
+        checkCard.discard(utils.arr[9]);
+    }
+    if ((sou[0] > 0 || sou[1] > 0) && sou[0] < 4) {
+        checkCard.draw(utils.arr[18]);
+        if (winCheck(checkCard)) {
+            result.push(utils.arr[18]);
+        }
+        checkCard.discard(utils.arr[18]);
+    }
+    // check 2 ~ 8
+    for (let i = 1; i < 8; ++i) {
+        if ((pin[i - 1] > 0 || pin[i] > 0 || pin[i + 1] > 0) && pin[i] < 4) {
+            checkCard.draw(utils.arr[i]);
+            if (winCheck(checkCard)) {
+                result.push(utils.arr[i]);
+            }
+            checkCard.discard(utils.arr[i]);
+        }
+        if ((man[i - 1] > 0 || man[i] > 0 || man[i + 1] > 0) && man[i] < 4) {
+            checkCard.draw(utils.arr[i + 9]);
+            if (winCheck(checkCard)) {
+                result.push(utils.arr[i + 9]);
+            }
+            checkCard.discard(utils.arr[i + 9]);
+        }
+        if ((sou[i - 1] > 0 || sou[i] > 0 || sou[i + 1] > 0) && sou[i] < 4) {
+            checkCard.draw(utils.arr[i + 18]);
+            if (winCheck(checkCard)) {
+                result.push(utils.arr[i + 18]);
+            }
+            checkCard.discard(utils.arr[i + 18]);
+        }
+    }
+    // check 9
+    if ((pin[8] > 0 || pin[7] > 0) && pin[8] < 4) {
+        checkCard.draw(utils.arr[8]);
+        if (winCheck(checkCard)) {
+            result.push(utils.arr[8]);
+        }
+        checkCard.discard(utils.arr[8]);
+    }
+    if ((man[8] > 0 || man[7] > 0) && man[8] < 4) {
+        checkCard.draw(utils.arr[17]);
+        if (winCheck(checkCard)) {
+            result.push(utils.arr[17]);
+        }
+        checkCard.discard(utils.arr[17]);
+    }
+    if ((sou[8] > 0 || sou[7] > 0) && sou[8] < 4) {
+        checkCard.draw(utils.arr[26]);
+        if (winCheck(checkCard)) {
+            result.push(utils.arr[26]);
+        }
+        checkCard.discard(utils.arr[26]);
+    }
+    // check tsupai
+    for (let i = 0; i < 7; ++i) {
+        if (other[i] > 0 && other[i] < 4) {
+            checkCard.draw(utils.arr[i + 27]);
+            if (winCheck(checkCard)) {
+                result.push(utils.arr[i + 27]);
+            }
+            checkCard.discard(utils.arr[i + 27]);
+        }
+    }
+
+    return result;
 }
 
+/**
+ * 
+ * @param {object} card hand card object, 14 tiless
+ * @returns {[string, array]} throw which to tenpai and wait which tiles
+ */
 function richiCheck(card) {
+    let result = [];
 
+    let checkCard = Object.assign({}, card);
+    checkCard.draw = card.draw;
+    checkCard.discard = card.discard;
+    for (let i = 0; i < checkCard.card.length; ++i) {
+        let currTile = checkCard.card[i]; 
+        checkCard.discard(currTile);
+        const tenpai = tenpaiCheck(checkCard);
+        if (tenpai.length > 0) {
+            result.push([currTile, tenpai]);
+        }
+        checkCard.draw(currTile);
+    }
+
+    return result;
 }
 
-function pointCheck(card) {
-    
+/**
+ * 
+ * @param {object} card hand card object, 14 tiles
+ * @param {string} chanfon 
+ * @param {string} menfon 
+ * @param {boolean} first check w richi, tenho, chiho
+ * @param {boolean} last check haitei, houtei
+ * @param {boolean} rinshan 
+ * @param {boolean} chankan 
+ * @param {boolean} ibatsu 
+ * @param {string} dora 
+ * @param {string} uradora 
+ */
+function pointCheck(card, chanfon, menfon, first, last, rinshan, chankan, ibatsu, dora, uradora) {
+    if (winCheck(card)) {
+        const yaku = new Point();
+
+        let cardCopy = Object.assign({}, card);
+
+        let minKo19 = 0;
+        let anKo19 = 0;
+        let minKo28 = 0;
+        let anKo28 = 0;
+        let minKan19 = 0;
+        let anKan19 = 0;
+        let minKan28 = 0;
+        let anKan28 = 0;
+        let pair = '';
+        // TODO uncertain variable ( see old code )
+
+        let mentsu = [];
+
+    }
 }
 
 function test() {

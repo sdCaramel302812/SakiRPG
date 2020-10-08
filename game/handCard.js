@@ -9,6 +9,7 @@ class HandCard{
     chiCard = [];
     // t1, t2, t3, dir (self, left, front, right)
     ponCard = [];
+    // t1, t2, t3, t4, dir (self, left, front, right)
     kanCard = [];
     newTile = '';
 

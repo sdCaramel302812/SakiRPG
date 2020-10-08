@@ -29,7 +29,7 @@ class Game extends events.EventEmitter{
 
         this.state = 'discard';
         this.gameInfo = {
-            fieldWind : 'east',
+            chanfon : 'east',
             kyouku : 0,
             honba : 0,
             kyoutaku : 0,       //  richi bo
