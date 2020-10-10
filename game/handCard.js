@@ -13,6 +13,7 @@ class HandCard{
     kanCard = [];
     newTile = '';
     ronTile = '';
+    richi = false;
 
     reset() {
 
