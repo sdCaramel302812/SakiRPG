@@ -12,6 +12,7 @@ class HandCard{
     // t1, t2, t3, t4, dir (self, left, front, right)
     kanCard = [];
     newTile = '';
+    ronTile = '';
 
     reset() {
 
@@ -29,6 +30,7 @@ class HandCard{
     }
 
     discard(tile) {
+        this.newTile = '';
         for (let i = 0; i < this.card.length; ++i) {
             if (this.card[i] === tile) {
                 this.card.splice(i, 1);

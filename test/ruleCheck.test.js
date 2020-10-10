@@ -71,7 +71,13 @@ describe('rule check test', () => {
           ], ruleCheck.richiCheck(hcard));
     });
 
-    it('', async () =>{
+    it('point test', async () =>{
+        const winCard = ['p1', 'p1', 'p1', 'p2', 'p3', 'p3', 'p4', 'p5r', 'p5r', 'p5', 'p5', 'p6' , 'p7', 'p8'];
+        hcard.deal(winCard);
+       ruleCheck.pointCheck(hcard, '1E', '1E', false, false, false, false, false, ['p1'], ['p8']); 
+    });
 
+    it('', async () =>{
+        
     });
 });

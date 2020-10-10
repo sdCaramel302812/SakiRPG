@@ -189,7 +189,8 @@ class Point {
         dora: 0,
         akadora: 0,
         uradora: 0,
-        yakuman: false
+        yakuman: false,
+        noYaku: true
     }
     yaku = {
         PIN_HU: false,

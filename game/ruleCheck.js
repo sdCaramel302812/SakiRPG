@@ -16,6 +16,9 @@ function chitoiCheck(card) {
         if (!utils.isSameTile(card.card[i * 2], card.card[i * 2 + 1])) {
             return false;
         }
+        if (i != 6 && utils.isSameTile(card.card[i * 2], card.cardp[(i + 1) * 2])) {
+            return false;
+        }
     }
 
     return true;
@@ -121,27 +124,27 @@ function winCheck(card) {
                     // s1 s1 s1
                     remain.splice(0, 3);
                     continue;
-                } else if (remain.length >= 3 && 
+                } else if (remain.length >= 3 && utils.checkOrder[remain[0]] <= 27 &&
                 utils.checkOrder[remain[2]] - utils.checkOrder[remain[1]] === 1 && 
                 utils.checkOrder[remain[2]] - utils.checkOrder[remain[0]] === 2) {
                     // s1 s2 s3
                     remain.splice(0, 3);
                     continue;
-                } else if (remain.length >= 4 &&
+                } else if (remain.length >= 4 && utils.checkOrder[remain[0]] <= 27 &&
                 utils.checkOrder[remain[3]] == utils.checkOrder[remain[2]] &&
                 utils.checkOrder[remain[3]] == utils.checkOrder[remain[1]]
                 ) {
                     // s1 s2 s2 s2 s2 s3
                     remain.splice(1, 3);
                     continue;
-                } else if (remain.length >= 4 &&
+                } else if (remain.length >= 4 && utils.checkOrder[remain[0]] <= 27 &&
                 utils.checkOrder[remain[3]] - utils.checkOrder[remain[2]] === 1 &&
                 utils.checkOrder[remain[3]] - utils.checkOrder[remain[0]] === 2) {
                     // s1 s2 s2 s3 s3 s4
                     remain.splice(0, 2);
                     remain.splice(1, 1);
                     continue;
-                } else if (remain.length >= 5 &&
+                } else if (remain.length >= 5 && utils.checkOrder[remain[0]] <= 27 &&
                 utils.checkOrder[remain[4]] - utils.checkOrder[remain[3]] === 1 &&
                 utils.checkOrder[remain[4]] - utils.checkOrder[remain[0]] === 2) {
                     // s1 s1 s2 s2 s3 s3
@@ -300,8 +303,8 @@ function richiCheck(card) {
  * @param {boolean} rinshan 
  * @param {boolean} chankan 
  * @param {boolean} ibatsu 
- * @param {string} dora 
- * @param {string} uradora 
+ * @param {[string]} dora 
+ * @param {[string]} uradora 
  */
 function pointCheck(card, chanfon, menfon, first, last, rinshan, chankan, ibatsu, dora, uradora) {
     if (winCheck(card)) {
@@ -318,10 +321,432 @@ function pointCheck(card, chanfon, menfon, first, last, rinshan, chankan, ibatsu
         let minKan28 = 0;
         let anKan28 = 0;
         let pair = '';
+        let tenPaiFu = true;
+        let pinHu = true;
+        let peiKo = 0;
+        let ipekoWithPair = '';
+        let chitoi = false;
+        let tanyao = true;
+        let menzen = true;
         // TODO uncertain variable ( see old code )
 
         let mentsu = [];
 
+        if (card.chiCard.length > 0 || card.ponCard.length > 0) {
+            menzen = false;
+        }
+        // count minko, yaku hai
+        for (let i = 0; i < cardCopy.ponCard.length; ++i) {
+            if (cardCopy.ponCard[i][0] == 'p1' ||
+                cardCopy.ponCard[i][0] == 'p9' ||
+                cardCopy.ponCard[i][0] == 'w1' ||
+                cardCopy.ponCard[i][0] == 'w9' ||
+                cardCopy.ponCard[i][0] == 's1' ||
+                checkOrder(cardCopy.ponCard[i][0]) >= 29) {
+                ++minKo19;
+                if (cardCopy.ponCard[i][0] == chanfon) {
+                    yaku.yaku.CHAN_FON = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.ponCard[i][0] == menfon) {
+                    yaku.yaku.MEN_FON = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.ponCard[i][0] == '5H') {
+                    yaku.yaku.HAKU = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.ponCard[i][0] == '6F') {
+                    yaku.yaku.FA = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.ponCard[i][0] == '7C') {
+                    yaku.yaku.CHUN = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+            } else {
+                ++minKo28;
+            }
+        }
+
+        // count kan, yaku hai
+        for (let i = 0; i < cardCopy.kanCard.length; ++i) {
+            if (cardCopy.kanCard[i][0] == 'p1' ||
+                cardCopy.kanCard[i][0] == 'p9' ||
+                cardCopy.kanCard[i][0] == 'w1' ||
+                cardCopy.kanCard[i][0] == 'w9' ||
+                cardCopy.kanCard[i][0] == 's1' ||
+                checkOrder(cardCopy.kanCard[i][0]) >= 29) {
+                if (cardCopy.kanCard[i][4] == 'self') {
+                    ++anKan19;
+                } else {
+                    ++minKan19;
+                    menzen = false;
+                }
+                if (cardCopy.kanCard[i][0] == chanfon) {
+                    yaku.yaku.CHAN_FON = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.kanCard[i][0] == menfon) {
+                    yaku.yaku.MEN_FON = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.kanCard[i][0] == '5H') {
+                    yaku.yaku.HAKU = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.kanCard[i][0] == '6F') {
+                    yaku.yaku.FA = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+                if (cardCopy.kanCard[i][0] == '7C') {
+                    yaku.yaku.CHUN = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                }
+            } else {
+                if (cardCopy.kanCard[i][4] == 'self') {
+                    ++anKan28;
+                } else {
+                    ++minKan28;
+                }
+            }
+        }
+
+        // check kokushi
+        const isKokushi = kokushiCheck(cardCopy);
+        if (isKokushi) {
+            // TODO
+        }
+
+        // find mentsu
+        if (cardCopy.card.length == 2) {
+            pair = cardCopy.card[0];
+            tenPaiFu = true;
+        } else if (!isKokushi) {
+            let done = false;
+
+            for (let i = 0; i < cardCopy.card.length - 1; ++i) {
+                if (done) {
+                    break;
+                }
+                // find pair
+                let remain = Object.assign([], cardCopy.card);
+                if (remain[i] === remain[i + 1]) {
+                    pair = remain[i];
+                    if (pair === chanfon || pair == menfon || utils.checkOrder[pair] >= 35) {
+                        pinHu = false;
+                    } else {
+                        pinHu = true;
+                    }
+
+                    remain.splice(i, 2);
+                    mentsu = [];
+                    peiKo = 0;
+                    ipekoWithPair = 0;
+
+                    // check mentsu
+                    while (true) {
+                        if (remain.length == 0) {
+                            done = true;
+                            break;
+                        }
+                        // TODO special case
+                        // s1 s1 s1 s2 s2 s2 s3 s3 s3
+                        // s2 s2 s2 s2 s3 s3 s3 s3 s4 s4 s4 s4 s5 s5
+                        if (remain.length >= 3 && utils.isSameTile(remain[0], remain[1]) && utils.isSameTile(remain[0], remain[2])) {
+                            // s1 s1 s1
+                            mentsu.push([remain[0], remain[1], remain[2]]);
+                            remain.splice(0, 3);
+                            continue;
+                        } else if (remain.length >= 3 &&  utils.checkOrder[remain[0]] <= 27 &&
+                        utils.checkOrder[remain[2]] - utils.checkOrder[remain[1]] === 1 && 
+                        utils.checkOrder[remain[2]] - utils.checkOrder[remain[0]] === 2) {
+                            // s1 s2 s3
+                            mentsu.push([remain[0], remain[1], remain[2]]);
+                            remain.splice(0, 3);
+                            continue;
+                        } else if (remain.length >= 4 && utils.checkOrder[remain[0]] <= 27 &&
+                        utils.checkOrder[remain[3]] == utils.checkOrder[remain[2]] &&
+                        utils.checkOrder[remain[3]] == utils.checkOrder[remain[1]]
+                        ) {
+                            // s1 s2 s2 s2 s2 s3
+                            mentsu.push([remain[1], remain[2], remain[3]]);
+                            remain.splice(1, 3);
+                            continue;
+                        } else if (remain.length >= 4 && utils.checkOrder[remain[0]] <= 27 &&
+                        utils.checkOrder[remain[3]] - utils.checkOrder[remain[2]] === 1 &&
+                        utils.checkOrder[remain[3]] - utils.checkOrder[remain[0]] === 2) {
+                            // s1 s2 s2 s3 s3 s4
+                            mentsu.push([remain[0], remain[1], remain[3]]);
+                            remain.splice(0, 2);
+                            remain.splice(1, 1);
+                            continue;
+                        } else if (remain.length >= 5 && utils.checkOrder[remain[0]] <= 27 &&
+                        utils.checkOrder[remain[4]] - utils.checkOrder[remain[3]] === 1 &&
+                        utils.checkOrder[remain[4]] - utils.checkOrder[remain[0]] === 2) {
+                            // s1 s1 s2 s2 s3 s3
+                            ++peiKo;
+                            // TODO i pei ko case
+                            mentsu.push([remain[0], remain[2], remain[4]]);
+                            remain.splice(0, 1);
+                            remain.splice(2, 2);
+                            continue;
+                        } else {
+                            break;
+                        }
+                        // TODO daisharin case
+                    }
+                }
+            }
+        }
+
+        if (chitoiCheck(card)) {
+            chitoi = true;
+            yaku.yaku.CHI_TOI = true;
+        }
+        // check an ko and pinhu
+        for (let i = 0; i < mentsu.length; ++i) {
+            if (mentsu[i][0] === mentsu[i][1]) {
+                let isAnko = true;
+                if (mentsu[i][0] === card.ronTile) {
+                    isAnko = false;
+                }
+                if (mentsu[i][0] == chanfon) {
+                    yaku.yaku.CHAN_FON = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                    if (isAnko) {
+                        ++anKo19;
+                    } else {
+                        ++minKo19;
+                    }
+                    tanyao = false;
+                } else if (mentsu[i][0] == menfon) {
+                    yaku.yaku.MEN_FON = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                    if (isAnko) {
+                        ++anKo19;
+                    } else {
+                        ++minKo19;
+                    }
+                    tanyao = false;
+                } else if (mentsu[i][0] == '5H') {
+                    yaku.yaku.HAKU = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                    if (isAnko) {
+                        ++anKo19;
+                    } else {
+                        ++minKo19;
+                    }
+                    tanyao = false;
+                } else if (mentsu[i][0] == '6F') {
+                    yaku.yaku.FA = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                    if (isAnko) {
+                        ++anKo19;
+                    } else {
+                        ++minKo19;
+                    }
+                    tanyao = false;
+                } else if (mentsu[i][0] == '7C') {
+                    yaku.yaku.CHUN = true;
+                    yaku.property.noYaku = false;
+                    ++yaku.property.han;
+                    if (isAnko) {
+                        ++anKo19;
+                    } else {
+                        ++minKo19;
+                    }
+                    tanyao = false;
+                } else if (mentsu[i][0] == 's1' || mentsu[i][0] == 's9' ||
+                mentsu[i][0] == 'w1' || mentsu[i][0] == 'w9' ||
+                mentsu[i][0] == 'p1' || mentsu[i][0] == 'p9') {
+                    if (isAnko) {
+                        ++anKo19;
+                    } else {
+                        ++minKo19;
+                    }
+                    tanyao = false;
+                } else {
+                    if (isAnko) {
+                        ++anKo28;
+                    } else {
+                        ++minKo28;
+                    }
+                }
+            } else {
+                if (!pinHu) {
+                    continue;
+                }
+                if (!menzen) {
+                    pinHu = false;
+                    continue;
+                }
+                if (anKan19 != 0 || anKan28 != 0 || anKo19 != 0 || anKo28 != 0) {
+                    pinHu = false;
+                    continue;
+                }
+                let lastTile = card.ronTile || card.newTile;
+                if ((mentsu[i][0] == lastTile && mentsu[i][2] != 's9' && mentsu[i][2] != 'w9' && mentsu[i][2] != 'p9') ||
+                    (mentsu[i][2] == lastTile && mentsu[i][0] != 's1' && mentsu[i][0] != 'w1' && mentsu[i][0] != 'p1')) {
+                    tenPaiFu = false;
+                }
+            }
+        }
+
+        // count fu
+        let fu = 20;
+        fu += minKo28 * 2;
+        fu += anKo28 * 4;
+        fu += minKo19 * 4;
+        fu += anKo19 * 8;
+        fu += minKan28 * 8;
+        fu += anKan28 * 16;
+        fu += minKan19 * 16;
+        fu += anKan19 * 32;
+        if (pair == chanfon || pair == menfon || pair == '5H' || pair == '6F' || pair == '7C') {
+            fu += 2;
+        }
+        if (card.newTile) {
+            fu += 2;
+        }
+        if (tenPaiFu) {
+            fu += 2;
+        }
+        if (menzen && card.ronTile) {
+            fu += 10;
+        }
+        if (pinHu && card.newTile) {
+            fu = 20;
+        }
+        if (pinHu && card.ronTile) {
+            fu = 30;
+        }
+        fu = Math.ceil(fu / 10) * 10;
+        // TODO later move it to ryan pei ko block
+        if (chitoi) {
+            fu = 25;
+        }
+
+        //
+        //  check yaku
+        //
+
+        // aka dora
+        for (i of card.card) {
+            if (i == 'p5r' || i == 'w5r' || i == 's5r') {
+                ++yaku.property.akadora;
+                ++yaku.property.han;
+            }
+        }
+        for (eat of card.chiCard) {
+            for (i of eat) {
+                if (i == 'p5r' || i == 'w5r' || i == 's5r') {
+                    ++yaku.property.akadora;
+                    ++yaku.property.han;
+                }
+            }
+        }
+        for (pon of card.ponCard) {
+            for (i of pon) {
+                if (i == 'p5r' || i == 'w5r' || i == 's5r') {
+                    ++yaku.property.akadora;
+                    ++yaku.property.han;
+                }
+            }
+        }
+        for (kan of card.kanCard) {
+            for (i of kan) {
+                if (i == 'p5r' || i == 'w5r' || i == 's5r') {
+                    ++yaku.property.akadora;
+                    ++yaku.property.han;
+                }
+            }
+        }
+        // dora
+        for (d of dora) {
+            for (i of card.card) {
+                if (i == d) {
+                    ++yaku.property.dora;
+                    ++yaku.property.han;
+                }
+            }
+            for (eat of card.chiCard) {
+                for (i of eat) {
+                    if (i == d) {
+                        ++yaku.property.dora;
+                        ++yaku.property.han;
+                    }
+                }
+            }
+            for (pon of card.ponCard) {
+                for (i of pon) {
+                    if (i == d) {
+                        ++yaku.property.dora;
+                        ++yaku.property.han;
+                    }
+                }
+            }
+            for (kan of card.kanCard) {
+                for (i of kan) {
+                    if (i == d) {
+                        ++yaku.property.dora;
+                        ++yaku.property.han;
+                    }
+                }
+            }
+        }
+        // uradora
+        for (d of uradora) {
+            for (i of card.card) {
+                if (i == d) {
+                    ++yaku.property.uradora;
+                    ++yaku.property.han;
+                }
+            }
+            for (eat of card.chiCard) {
+                for (i of eat) {
+                    if (i == d) {
+                        ++yaku.property.uradora;
+                        ++yaku.property.han;
+                    }
+                }
+            }
+            for (pon of card.ponCard) {
+                for (i of pon) {
+                    if (i == d) {
+                        ++yaku.property.uradora;
+                        ++yaku.property.han;
+                    }
+                }
+            }
+            for (kan of card.kanCard) {
+                for (i of kan) {
+                    if (i == d) {
+                        ++yaku.property.uradora;
+                        ++yaku.property.han;
+                    }
+                }
+            }
+        }
+        
+        // pinhu
+        if (peiKo == 2) {
+            chitoi = false;
+        }
     }
 }
 

@@ -47,12 +47,12 @@ class Game extends events.EventEmitter{
     setPlayer(playerList) {
         this.playerList = playerList;
         for (let i = 0; i < 4; ++i) {
-            
+            // TODO I foget what to do
         }
     }
 
     newKyouku() {
-
+        // TODO new kyouku
     }
 
     nextPlayer() {

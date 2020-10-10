@@ -1,4 +1,9 @@
 const HandCard = require('./handCard');
+const { winCheck,
+        tenpaiCheck,
+        richiCheck,
+        pointCheck
+    } = require('./ruleCheck');
 
 
 class Player {
