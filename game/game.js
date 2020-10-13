@@ -81,6 +81,22 @@ class Game extends events.EventEmitter{
         for (let i = 0; i < 4; ++i){
             this.playerList[i].card.deal(cardList[i]);
         }
+
+        this.run('draw');
+    }
+
+    /**
+     * 
+     * @param {number} plID 
+     * @param {string} tile 
+     */
+    discard(plID, tile) {
+        if (plID != this.gameInfo.currentPlayer) {
+            return;
+        }
+        this.wall.discardToRiver(plID, tile);
+
+        this.actionAfterDiscard(plID, tile, 0);
     }
 
     /**
@@ -141,15 +157,6 @@ class Game extends events.EventEmitter{
         this.run('draw');
     }
 
-    discard(plID, tile) {
-        if (plID != this.gameInfo.currentPlayer) {
-            return;
-        }
-        this.wall.discardToRiver(plID, tile);
-
-        this.actionAfterDiscard(plID, tile, 0);
-    }
-
     win(plID, doing) {
         if (doing == 'no') {
             this.actionAfterDiscard(plID, tile, 1);
@@ -197,7 +204,7 @@ class Game extends events.EventEmitter{
     }
 }
 
-
+module.exports = Game;
 
 function test() {
     var config = {
