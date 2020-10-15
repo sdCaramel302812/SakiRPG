@@ -1,5 +1,5 @@
-const ruleCheck = require('../game/ruleCheck');
-const HandCard = require('../game/handCard');
+const ruleCheck = require('../src/ruleCheck');
+const HandCard = require('../src/handCard');
 const assert = require('assert');
 const sinon = require('sinon');
 
