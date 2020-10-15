@@ -1,67 +1,67 @@
 const HandCard = require('./handCard');
 const { winCheck,
-        tenpaiCheck,
-        richiCheck,
-        pointCheck
-    } = require('./ruleCheck');
+  tenpaiCheck,
+  richiCheck,
+  pointCheck
+} = require('./ruleCheck');
 
 
 class Player {
-    constructor(rule) {
-        this.card = new HandCard();
-        this.rule = rule;
-        this.currentState = 'wait';
-    }
+  constructor(rule) {
+    this.card = new HandCard();
+    this.rule = rule;
+    this.currentState = 'wait';
+  }
 
-    canWin(tile) {
+  canWin(tile) {
 
-        return false;
-    }
+    return false;
+  }
 
-    canKan(tile) {
+  canKan(tile) {
 
-        return false;
-    }
+    return false;
+  }
 
-    canPon(tile) {
+  canPon(tile) {
 
-        return false;
-    }
+    return false;
+  }
 
-    canChi(tile) {
+  canChi(tile) {
 
-        return false;
-    }
+    return false;
+  }
 
-    /**
+  /**
      * 
      * @param {string} action what kind of action
      */
-    sendRequest(action) {
-        switch(action) {
-            case 'kan':
-                this.currentState = 'kan';
-                break;
-            case 'pon':
-                this.currentState = 'pon';
-                break;
-            case 'chi':
-                this.currentState = 'chi';
-                break;
-            case 'discard':
-                this.currentState = 'discard';
-                break;
-        }
+  sendRequest(action) {
+    switch(action) {
+    case 'kan':
+      this.currentState = 'kan';
+      break;
+    case 'pon':
+      this.currentState = 'pon';
+      break;
+    case 'chi':
+      this.currentState = 'chi';
+      break;
+    case 'discard':
+      this.currentState = 'discard';
+      break;
     }
+  }
 }
 
 function test() {
-    var pl = new Player();
+  var pl = new Player();
 }
 
 
 if (require.main === module) {
-    test();
+  test();
 }
 
 

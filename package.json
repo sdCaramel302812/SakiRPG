@@ -13,6 +13,7 @@
     "ws": "^7.3.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.11.0",
     "eslint-plugin-vue": "^7.0.1",
     "webpack": "^5.1.0",
@@ -21,7 +22,8 @@
   "scripts": {
     "test": "mocha",
     "start": "node ./server/server.js",
-    "build": "webpack"
+    "build": "webpack",
+    "eslint": "eslint . --config .eslintrc.js --fix"
   },
   "repository": {
     "type": "git",

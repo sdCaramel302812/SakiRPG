@@ -5,13 +5,13 @@ const app = express();
 var port = 80;
 
 app.get('/', (request, response) => {
-    response.sendFile('/d/saki-RPG/client/index.html');
+  response.sendFile('/d/saki-RPG/client/index.html');
 });
 app.get('/123', (request, response) => {
-	response.send('hello world 123');
+  response.send('hello world 123');
 });
 app.get('/456', (request, response) => {
-	response.send('hello world 456');
+  response.send('hello world 456');
 });
 app.use(express.static('../client'));
 //	res.json()		send json response
@@ -20,5 +20,5 @@ app.use(express.static('../client'));
 
 
 http.createServer(app).listen(port, () => {
-	console.log(`listening on port ${port}`);
+  console.log(`listening on port ${port}`);
 });
