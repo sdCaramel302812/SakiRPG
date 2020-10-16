@@ -89,7 +89,7 @@ const ronTable = {
   12: 24000,
   13: 32000
 }
-var oyaTsumoTable = {
+const oyaTsumoTable = {
   1: {
     30: 500,
     40: 700,
@@ -135,7 +135,7 @@ var oyaTsumoTable = {
   12 : 12000,
   13 : 16000
 }
-oyaRonTable = {
+const oyaRonTable = {
   1: {
     30: 1500,
     40: 2000,

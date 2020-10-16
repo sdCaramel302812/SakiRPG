@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title> Webpack and Vue </title>
-</head>
-<body>
-<div id = "app"></div>
-<script src = "main.js"></script>
-</body>
+<html lang="en">
+  <head>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div v-if="inGame" id="app">
+      <div id="MJ_board">
+        {{ message }}
+        <ul class="hardCard">
+          <button v-for="index in test" :class="index" class="tile">
+            {{ index }}
+          </button>
+        </ul>
+        <!--<img src="img/saki.jpg">-->
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
 </html>

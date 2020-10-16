@@ -1,0 +1,17 @@
+{
+  "presets": [
+    "vue",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions"]
+        },
+        "modules": "commonjs"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties"
+  ]
+}

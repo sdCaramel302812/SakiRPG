@@ -4,16 +4,16 @@ const app = express();
 
 var port = 80;
 
-app.get('/', (request, response) => {
-  response.sendFile('/d/saki-RPG/client/index.html');
-});
+//app.get('/', (request, response) => {
+//  response.sendFile('/d/saki-RPG/client/index.html');
+//});
 app.get('/123', (request, response) => {
   response.send('hello world 123');
 });
 app.get('/456', (request, response) => {
   response.send('hello world 456');
 });
-app.use(express.static('../client'));
+app.use(express.static('./dist'));
 //	res.json()		send json response
 //	res.sendFile()	send file
 

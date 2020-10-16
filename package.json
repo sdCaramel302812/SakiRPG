@@ -10,12 +10,24 @@
     "phaser": "^3.24.1",
     "sinon": "^9.1.0",
     "vue": "^2.6.12",
-    "ws": "^7.3.1"
+    "webpack-node-externals": "^2.5.2",
+    "ws": "^7.3.1",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.1",
+    "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-vue": "^2.0.2",
+    "css-loader": "^5.0.0",
     "eslint": "^7.11.0",
     "eslint-plugin-vue": "^7.0.1",
+    "file-loader": "^6.1.1",
+    "vue-loader": "^15.9.3",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.12",
     "webpack": "^5.1.0",
     "webpack-cli": "^4.0.0"
   },
@@ -23,7 +35,8 @@
     "test": "mocha",
     "start": "node ./server/server.js",
     "build": "webpack",
-    "eslint": "eslint . --config .eslintrc.js --fix"
+    "eslint": "eslint . --config .eslintrc.js --fix",
+    "sass": "sass dist/css/style.scss dist/css/style.css"
   },
   "repository": {
     "type": "git",
