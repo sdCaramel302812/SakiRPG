@@ -7,7 +7,7 @@ const vm = new Vue({
     message: 'hello vue',
     inGame: true,
     inMenu: false,
-    test: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n']
+    test: ['', '', '', '', '', '', '', '', '', '', '', '', '', '']
   },
   mounted : function(){
     console.log('Hello Webpack and Vue !');  

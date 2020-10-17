@@ -1,11 +1,10 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
 }
 
 #MJ_board {
+  position: relative;
   width: 90vw;
   height: 50vw;
   background-image: url(../img/MJ_material.png);
@@ -13,18 +12,26 @@ html, body {
   background-size: cover;
   background-repeat: no-repeat;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 5vw;
+  margin-right: 5vw;
 }
 
 .hardCard {
-  margin-top: 50vw;
-  margin-left: 10%;
+  position: absolute;
+  padding-left: 0%;
+  padding-right: 0%;
+  left: 21%;
+  right: 21%;
+  top: 91%;
+  height: 9%;
 }
 
 .tile {
-  height: 5vw;
-  width: 3.8vw;
+  height: 100%;
+  width: 7.1%;
+  background-image: url(../img/MJ_material.png);
+  background-position: 0% 25%;
+  background-size: 1200% 900%;
 }
 
 .txt {
